@@ -4,8 +4,8 @@
     <div class="short_post">
         <h3><a href="{% url 'blog:post_detail' post.slug %}">{{ post.title }}</a></h3>
         <p>
-            {% for tag in post.tags %}
-            <a href={% url "blog:tag_detail" tag %}>#{{tag}}</a>
+            {% for tag in post.tags.all %}
+            <a href="{% url "blog:tag_detail" tag.slug %}">#{{tag}}</a>
             {% endfor %}
         </p>
         <div>{{ post.content|truncatewords:10 }}</div>

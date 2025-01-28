@@ -53,3 +53,30 @@ nav ul li {
 .comment_username {
     font-weight: bold;
 }
+
+.category_gallery {
+    display: flex;
+    flex-direction: center;
+    justify-content: center;
+    width: 700px;
+    margin: auto;
+}
+
+.category {
+    width: 70px;
+    height: 50px;
+    border: 1px solid black;
+    border-radius: 10px;
+    margin: 20px;
+    padding: 20px;
+    background-color: cornflowerblue;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.category a {
+    color: white;
+    font-weight: bold;
+}

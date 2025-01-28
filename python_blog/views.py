@@ -1,11 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.urls import reverse
 
 from posts_dataset import dataset
 from help_functions import python_slugify, python_slugify_list
 
-from python_blog.models import Post
+from python_blog.models import Post, Category, Tag
 
 CATEGORIES = [
     {"slug": "python", "name": "Python"},
@@ -48,21 +48,17 @@ def catalog_posts(request):
 
 def post_detail(request, post_slug):
     context = {
-        "post": Post.objects.get(slug=post_slug),
+        "post": get_object_or_404(Post.objects.filter(slug=post_slug)),
+        # "post": Post.objects.get(slug=post_slug),
         }
     return render(request, "post_detail.html", context)
 
 
 def catalog_categories(request):
-    # links = []
-    # for category in CATEGORIES:
-    #     url = reverse("blog:category_detail", args=[category["slug"]])
-    #     links.append(f'<p><a href="{url}">{category["name"]}</a></p>')
 
     context = {
         "title": "Категории",
-        "text": "Текст страницы с категориями",
-        "categories": CATEGORIES,
+        "categories": Category.objects.all(),
     }
     return render(request, "catalog_categories.html", context)
 
@@ -89,16 +85,18 @@ def catalog_tags(request):
 
 
 def tag_detail(request, tag_slug):
-    posts = []
+    # posts = []
 
-    for post in Post.objects.all():
-        if tag_slug in python_slugify_list(post.tags):
-            posts.append(post)
+    # for post in Post.objects.all():
+    #     if tag_slug in python_slugify_list(post.tags):
+    #         posts.append(post)
+    tag = Tag.objects.get(slug=tag_slug)
+    posts = tag.posts.all()
 
     context = {
-        "title": f"Страница тега {tag_slug}",
-        "slug": tag_slug,
-        "dataset_posts": posts,
+        "title": f"Посты по тегу {tag.name}",
+        "tag": tag,
+        "posts": posts,
     }
 
     return render(request, "tag_detail.html", context)
