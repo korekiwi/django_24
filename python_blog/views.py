@@ -106,7 +106,7 @@ def tag_detail(request, tag_slug):
     #     if tag_slug in python_slugify_list(post.tags):
     #         posts.append(post)
     tag = Tag.objects.get(slug=tag_slug)
-    posts = tag.posts.all()
+    posts = tag.posts.select_related('category', 'author').prefetch_related('tags').all()
 
     context = {
         "title": f"Посты по тегу {tag.name}",
