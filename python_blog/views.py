@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.urls import reverse
+from django.db.models import Count
 
 from posts_dataset import dataset
 from help_functions import python_slugify, python_slugify_list
@@ -58,19 +59,20 @@ def post_detail(request, post_slug):
 
 
 def catalog_categories(request):
-
     context = {
         "title": "Категории",
-        "categories": Category.objects.all(),
+        "categories": Category.objects.annotate(posts_count=Count("posts")).order_by("-posts_count")
     }
     return render(request, "catalog_categories.html", context)
 
 
 def category_detail(request, category_slug):
-    category = Category.objects.filter(slug=category_slug)
+    category = Category.objects.get(slug=category_slug)
+    posts = category.posts.select_related('category', 'author').prefetch_related('tags').all()
 
     context = {
-        "category": get_object_or_404(category)
+        "category": category,
+        "posts": posts,
     }
 
     return render(request, "category_detail.html", context)
@@ -93,7 +95,7 @@ def category_detail(request, category_slug):
 def catalog_tags(request):
     context = {
         'title': 'Теги',
-        'tags': Tag.objects.all()
+        'tags': Tag.objects.annotate(posts_count=Count("posts")).order_by("-posts_count")
     }
 
     return render(request, "catalog_tags.html", context)

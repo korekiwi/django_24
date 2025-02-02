@@ -9,7 +9,7 @@
 <div class="gallery">
     {% for category in categories %}
     <div class="category">
-        <a href="{% url "blog:category_detail" category.slug %}">{{category.name}}</a>
+        <a href="{% url "blog:category_detail" category.slug %}">{{category.name}} ({{category.posts.count}})</a>
     </div>
     {% endfor %}
 </div>

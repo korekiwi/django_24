@@ -17,6 +17,7 @@
 
         <p>{{post.content}}</p>
         <p>Просмотры: {{post.views}}</p>
+        <p>Категория: <a href="{% url "blog:category_detail" post.category.slug %}">{{post.category.name}}</a></p>
     </div>      
 </div>
 
