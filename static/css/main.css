@@ -54,7 +54,7 @@ nav ul li {
     font-weight: bold;
 }
 
-.category_gallery {
+.gallery {
     display: flex;
     flex-direction: center;
     justify-content: center;
@@ -76,8 +76,27 @@ nav ul li {
     justify-content: center;
 }
 
+.tag {
+    width: 70px;
+    height: 20px;
+    border: 1px solid black;
+    border-radius: 10px;
+    margin: 20px;
+    padding: 20px;
+    background-color:burlywood;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .category a {
     color: white;
+    font-weight: bold;
+}
+
+.tag a {
+    color: black;
     font-weight: bold;
 }
 

@@ -7,9 +7,9 @@
 {% block content %}
 <h3>{{title}}</h3>
 <div class="gallery">
-    {% for category in categories %}
-    <div class="category">
-        <a href="{% url "blog:category_detail" category.slug %}">{{category.name}}</a>
+    {% for tag in tags %}
+    <div class="tag">
+        <a href="{% url "blog:tag_detail" tag.slug %}">#{{tag.name}}</a>
     </div>
     {% endfor %}
 </div>

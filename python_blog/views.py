@@ -91,7 +91,12 @@ def category_detail(request, category_slug):
 
 
 def catalog_tags(request):
-    return HttpResponse("Каталог тегов")
+    context = {
+        'title': 'Теги',
+        'tags': Tag.objects.all()
+    }
+
+    return render(request, "catalog_tags.html", context)
 
 
 def tag_detail(request, tag_slug):
