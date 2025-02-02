@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{category.name}}
+{% endblock title %}
+
+{% block content %}
+<h3>Категория {{category.name}}</h3>
+<div class="descr">{{category.description}}</div>
+{% endblock content %}

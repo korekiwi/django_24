@@ -80,3 +80,12 @@ nav ul li {
     color: white;
     font-weight: bold;
 }
+
+.descr {
+    width: 400px;
+    margin: 10px auto;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 10px;
+    font-style: italic;
+}

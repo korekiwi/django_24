@@ -15,6 +15,7 @@ CATEGORIES = [
     {"slug": "linux", "name": "Linux"},
 ]
 
+
 def main(request):
     # catalog_categories_url = reverse("blog:categories")
     # catalog_tags_url = reverse("blog:tags")
@@ -25,6 +26,7 @@ def main(request):
         "user_status": "moderator",
     }
     return render(request, "main.html", context)
+
 
 def about(request):
     context = {
@@ -40,15 +42,16 @@ def catalog_posts(request):
 
     context = {
         "title": "Каталог постов",
-        "posts": Post.objects.all(),
+        "posts": Post.objects.select_related('category', 'author').prefetch_related('tags').all(),
     }
     
     return render(request, "catalog_posts.html", context)
 
 
 def post_detail(request, post_slug):
+    post = Post.objects.select_related("category", "author").prefetch_related("tags").filter(slug=post_slug)
     context = {
-        "post": get_object_or_404(Post.objects.filter(slug=post_slug)),
+        "post": get_object_or_404(post),
         # "post": Post.objects.get(slug=post_slug),
         }
     return render(request, "post_detail.html", context)
@@ -64,20 +67,27 @@ def catalog_categories(request):
 
 
 def category_detail(request, category_slug):
+    category = Category.objects.filter(slug=category_slug)
 
-    category = [cat for cat in CATEGORIES if cat["slug"] == category_slug][0]
+    context = {
+        "category": get_object_or_404(category)
+    }
 
-    if category:
-        name = category["name"]
-    else:
-        name = category_slug
+    return render(request, "category_detail.html", context)
 
-    return HttpResponse(
-        f"""
-        <h1>Категория: {name}</h1>
-        <p><a href="{reverse('blog:categories')}">Назад к категориям</a></p>
-    """
-    )
+    # category = [cat for cat in CATEGORIES if cat["slug"] == category_slug][0]
+    #
+    # if category:
+    #     name = category["name"]
+    # else:
+    #     name = category_slug
+    #
+    # return HttpResponse(
+    #     f"""
+    #     <h1>Категория: {name}</h1>
+    #     <p><a href="{reverse('blog:categories')}">Назад к категориям</a></p>
+    # """
+    # )
 
 
 def catalog_tags(request):
@@ -100,6 +110,3 @@ def tag_detail(request, tag_slug):
     }
 
     return render(request, "tag_detail.html", context)
-
-
-    # return HttpResponse(f"Страница тега {tag_slug}")
